@@ -1,7 +1,3 @@
-<script
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-  type="text/javascript">
-</script>
 # Trying to get a glimpse what we have to do
 
 - navier stokes flow around ball in a tube (this is constant, only one solve used)
@@ -24,7 +20,7 @@
 ## What should actually be happening
 ##### understood a step? put it in here
 - navier stokes flow around ball on fixed domain
-- 
+-
 
 ## available tutorials/examples we have to fix together + their explanation
 
