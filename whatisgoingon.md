@@ -12,6 +12,11 @@
 - initial change function? We have to start with something to change on the grid?!?!
 - Change functions on our grid must have compact support - boundaries can't change, only ball (tube is static)
 
+##### Shape derivative (not needed here) because of autodiff
+$\mathrm{d}J(\Omega)(\mathbf{X}) = \int_{\Omega} \mathbf{S}_1:D \mathbf{X} dx$
+$S_1 = \biggl(\frac{1}{2}Du : Du - p div(u) \biggr) I_2 + Du^T p - Du^T Du.$ <br>
+$\mathrm{u}$ and $p$ are the solutions to the stokesflow problem<br>
+
 ## things to look into/I should learn first
 - state equation
 - regression of 2d function
