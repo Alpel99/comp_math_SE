@@ -21,6 +21,7 @@
 
 \begin{document}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -50,14 +51,12 @@
 \pagebreak
 \thispagestyle{empty}
 \newgeometry{top=2.25cm, bottom=2.25cm}
-\tableofcontents
+{\sffamily\tableofcontents}
 \thispagestyle{empty}
 \restoregeometry
 \pagebreak
-\blankpage
 
 \pagenumbering{arabic}
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,17 +67,46 @@
 
 
 %%% This is a first surrogate chapter to intuitively show you how and where to include new chapters!
-\input{content/08_chapter_1}
+\input{content/07_todo}
+\pagebreak
+
+\input{content/08_chapter_1_intro}
 
 \pagebreak
 
+\input{content/09_chapter_2_stokes}
+
+\pagebreak
+
+\input{content/10_chapter_3_shape_opt}
+
+\pagebreak
+
+\input{content/11_chapter_4_lagrange}
+
+\pagebreak
+
+\input{content/12_chapter_5_shape_derr}
+
+\pagebreak
+
+\input{content/13_chapter_6_deformation}
+
+\pagebreak
+
+\input{content/14_chapter_7_iter}
+
+\pagebreak
+
+\input{content/15_chapter_8_conclusion}
+
+\pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% During the document writing process, this single .tex file is used to let dasdyou write down a little to do list, just comment it out when the paper is done!
-\input{content/07_todo}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,7 +120,7 @@
 \addcontentsline{toc}{section}{References}
 
 
-%\pagebreak
+\pagebreak
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

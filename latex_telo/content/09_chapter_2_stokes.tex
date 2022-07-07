@@ -1,0 +1,34 @@
+\section{The Stokes Equations in NGSolve}
+
+The Stokes Equation, a linear partial differential equation, can describe a stationary incompressible Newtonian fluid
+with high viscosities and low Reynolds numbers. It is defined below in equation \ref{stokes_PDE}:
+\null
+
+\begin{equation}\label{stokes_PDE}
+    \begin{aligned}
+    -\mu \Delta u + \nabla p &= f \\
+    \mathrm{div} \, u &= 0 \\
+    \end{aligned}
+\end{equation}
+
+\null
+
+Where $\mu \in \mathbb{R}$ is the viscosity constant and $f$ the data (e.g. source). 
+The problem yields the vectorial velocity field $u:\Omega \rightarrow \mathbb{R}^d$ and 
+the scalar pressure field $p:\Omega \rightarrow \mathbb{R}$. In order to solve the Stokes equation with the Finite Element Method in NGSolve,
+it needs to be transformed to the weak formulation, where the solutions $u$ and $p$ are linear combinations of basis functions in a Sobolev space.
+See Faustmann\cite{lecture_notes_faustmann_numPDE} Chapter 3 for further elaborations on Sobolev spaces. The weak formulation can be derrived by
+multipling the now called trial-functions $u$ and $p$ with test-functions $v$ and $q$, perform transformations and integrate them. The test-functions have to fulfil certain
+conditions to permit the transformations in order to arrive at a weak problem with 
+linear convergence rates, see Faustmann\cite{lecture_notes_faustmann_numPDE}: \\
+
+Find $u \in [H^1_0(\Omega)]^d$ and $p \in L^2(\Omega)$ such that
+\begin{equation}\label{weak_stokes_PDE}
+    \begin{aligned}
+    &\int_{\Omega} \nabla u : \nabla v \, dx + \int_{\Omega} \mathrm{div}(v)p \, dx &=& \int_{\Omega}f v \, dx &\forall& v \in [H^1_0(\Omega)]^d \\
+    &\int_{\Omega} \mathrm{div}(u)q \, dx &=& \, 0   &\forall& q \in L^2(\Omega)
+    \end{aligned}
+\end{equation}
+
+The
+
