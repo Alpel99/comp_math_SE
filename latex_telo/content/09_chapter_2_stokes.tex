@@ -1,19 +1,33 @@
 \section{The Stokes Equations in NGSolve}
 
-The Stokes Equation, a linear partial differential equation, can describe a stationary incompressible Newtonian fluid
-with high viscosities and low Reynolds numbers. It is defined below in equation \ref{stokes_PDE}:
-\null
-
-\begin{equation}\label{stokes_PDE}
-    \begin{aligned}
-    -\mu \Delta u + \nabla p &= f \\
-    \mathrm{div} \, u &= 0 \\
-    \end{aligned}
-\end{equation}
+The Stokes Equations are linear partial differential equations, which describe a stationary incompressible Newtonian fluid flow
+with high viscosities and low Reynolds numbers. For the implementation in NGSolve, a suitable geometry and boundary conditions are 
+the ones proposed by Sturm et. al. \cite{nearly_conformal_paper}, where the fluid flow around a cylinder is investigated while the
+outer boundary of $\Omega$ is prescriped a velocity striclty in $x$ direction, the so called far field velocity:
 
 \null
 
-Where $\mu \in \mathbb{R}$ is the viscosity constant and $f$ the data (e.g. source). 
+\begin{figure}[!htbp]
+\begin{minipage}{.5\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/domain_graphic_sturm.PNG}
+    \caption{Domain $\Omega$ for Stokes PDE's (\ref{stokes_PDE}) \cite{nearly_conformal_paper}}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+    \begin{equation}\label{stokes_PDE}
+        \begin{aligned}
+            -\mu \Delta u + \nabla p &=0& \, &\text{in } \Omega,& \\
+            \mathrm{div} \, u &=0& \, &\text{in } \Omega,& \\
+            \mathbf{u} &=0& \, &\text{on } \Gamma,& \\
+            \mathbf{u} &=\mathbf{u}_{\infty}& \, &\text{on } \Gamma_{\infty},& \\
+        \end{aligned}
+    \end{equation}
+\end{minipage}
+\end{figure}
+
+\null
+
+Where $\mu \in \mathbb{R}$ is the viscosity constant and is set to 1 for simplicity. 
 The problem yields the vectorial velocity field $u:\Omega \rightarrow \mathbb{R}^d$ and 
 the scalar pressure field $p:\Omega \rightarrow \mathbb{R}$. In order to solve the Stokes equation with the Finite Element Method in NGSolve,
 it needs to be transformed to the weak formulation, where the solutions $u$ and $p$ are linear combinations of basis functions in a Sobolev space.
@@ -30,5 +44,39 @@ Find $u \in [H^1_0(\Omega)]^d$ and $p \in L^2(\Omega)$ such that
     \end{aligned}
 \end{equation}
 
-The
+\pagebreak
+
+\begin{lstlisting}[language=Python, title=Python Listing Title]
+    from ngsolve import *
+    from netgen.geom2d import SplineGeometry
+    from ngsolve.webgui import Draw
+
+    # Geometry with meshwidth h_m
+    h_m = 0.4
+    geo = SplineGeometry()
+    geo.AddRectangle((-3,-2), (3, 2), bcs=("top", "out", "bot", "in"), leftdomain=1, rightdomain=0)
+    geo.AddCircle(c=(0, 0), r=0.5, leftdomain=0, rightdomain=1, bc="cyl", maxh=h_m) 
+    mesh = Mesh(geo.GenerateMesh(maxh=h_m))
+    mesh.Curve(3);
+
+    # Setting up appropriate Function Spaces and boundary Conditions
+    k = 2
+    V = H1(mesh,order=k, dirichlet="top|bot|cyl|in|out")
+    Q = H1(mesh,order=k-1)
+    FES = FESpace([V,V,Q]) # Omitting command VectorH1 --> [V,Q] 
+
+    ux,uy,p = FES.TrialFunction()
+    vx,vy,q = FES.TestFunction()
+
+    # stokes equation
+    def Equation(ux,uy,p,vx,vy,q):
+        div_u = grad(ux)[0]+grad(uy)[1] # custom divergence u
+        div_v = grad(vx)[0]+grad(vy)[1] # custom divergence v
+        return (grad(ux)*grad(vx)+grad(uy)*grad(vy) + div_u*q + div_v*p)* dx
+
+    a = BilinearForm(FES)
+    a += Equation(ux,uy,p,vx,vy,q)
+    a.Assemble()
+
+\end{lstlisting}
 

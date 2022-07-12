@@ -144,8 +144,10 @@
 
 % This is the listings package to make code appear like actual code!
 % https://mirror.foobar.to/CTAN/macros/latex/contrib/listings/listings.pdf
-\usepackage{listings}
+\usepackage{listings}{
  \lstset{frame=tb,
+  basicstyle=\fontsize{9}{13}\selectfont\sffamily,
+  frame=single,	 
   language=Python,
   breaklines=true,
   showstringspaces=false,
@@ -153,7 +155,7 @@
   numbers=left,
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
-  tabsize=3
+  tabsize=2
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -188,6 +190,9 @@
     %linktocpage 				% Seitenzahlen anstatt Text im Inhaltsverzeichnis verlinken
 ]{hyperref}
 
+\usepackage{tcolorbox}
+%Fancy boxes around text!
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
