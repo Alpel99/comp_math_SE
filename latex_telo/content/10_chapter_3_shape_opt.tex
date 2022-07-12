@@ -1,2 +1,16 @@
 \section{Shape Optimization}
 
+Shape optimization is the process of minimizing of shape functions J. This function depends on the domain $\Omega$, which will be perturbed in the minimization process. 
+The perturbations of the shape $\Omega$ are described by the following transformation: $\Omega_t := (Id + tX )(\Omega)$. According to this, for small perturbations and $t > 0$, the shape derivative is: \cite{fully_semi_paper_sturm}
+
+\begin{equation}
+	DJ(\Omega)(X) := \left(\frac{\partial}{\partial t}J(\Omega_t)\right)\bigg\rvert_{t=0} = \lim_{t \to 0} \frac{J(\Omega_t)-J(\Omega)}{t}
+\end{equation}
+
+This is needed for ... ? \\
+
+A lot of engineering applications require the shape to be dependent on a PDE. The resulting problems are called PDE constrained shape optimization. This yields a minimization problem of the shape function subjected to the side constraints of the (in our case) stokes equation.
+
+% what is then actually happening here?
+
+This 
