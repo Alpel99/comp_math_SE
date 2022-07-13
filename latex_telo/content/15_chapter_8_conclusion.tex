@@ -1,1 +1,14 @@
 \section{Results and Conclusion}
+The implementation with automatic differentiation from ngsolve is not extremely complicated but not as straight forward as one would hope for. A big problem with this approach are the different types of objects in ngsolve, namely \obj{float}, \obj{CoefficientFunction}, \obj{Parameter} and \obj{SumOfIntegrals}, which are not easy to concatenate the right way to achieve the desirable function.
+This does not occur for the stokes equation or shape function, but complex side constraints are tougher than necessary.
+
+The \fun{DiffShape()} function helps to eliminate the need to derive and transform the terms in the Lagrangian ourselves, but is e.g. not usable for \obj{VectorH1} functions. 
+With the automatic Differentiation we were able to achieve the desired form:
+The volume constraint is very important for this piece and is possible to be implemented with and or without differentiation. This was also showed in a programming example, that this term on its own can deform any shape to the desired volume.
+On the other hand, the barycenter constraint does not hold up to its expectations. None of our implemented terms does give the desired functionality and others we are not able to implement in ngsolve.
+
+Even without the barycenter constraint we were able to achieve this solution after 300 iterations:
+
+% figure olive
+
+The derived shape derivative of the paper \cite{nearly_conformal_paper} does not show the same behavior as the one created from \fun{DiffShape()}. That means we were also not able to create a solution that looks similar to the one before.

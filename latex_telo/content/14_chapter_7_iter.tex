@@ -48,3 +48,5 @@ The entire code inside the loop looks like this:
 				break
 		gfset.vec.data -= scale * gfX.vec
 \end{lstlisting}
+
+It is also possible to implement some sort of line search for the step size, similar to the armijo rule. This way one can do less iterations but take better/bigger steps, being more efficient in regards to computational efforts. More to this can be read in ...
