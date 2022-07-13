@@ -1,1 +1,50 @@
 \subsection{Iteration}
+In this chapter we want do describe the process of one iterations which gets repeated time after time until the optimal shape is achieved.
+Before we start with the iteration process we reset all possible variables:
+This includes the \var{gfset}, resetting the scene, and to reinitialize the parameters for the geometric constraints. If this step is skipped, one could start with weird variable values that lead to drastically different results.
+
+\begin{lstlisting}[language=Python, title=Reset before iteration, label=lst:reset]
+gfset.Set((0,0))
+mesh.SetDeformation(gfset)
+scene.Redraw()
+
+updateParams()
+alpha0 = 1e-4
+beta0 = 0
+alpha.Set(alpha0)
+beta.Set(beta0)
+\end{lstlisting}
+
+Our iteration is just bounded by a maximum number of steps, even though it should be possible to take some measure on the \var{gfX} and determine a stop by it.
+This still requires parameter tuning, especially because some measures could yield different results depending on the mesh width.
+
+Each iteration then starts by calling \fun{SetDeformation(gfset)}, and redrawing needed scenes. This would also be the place to gather data, like the current drag or area of the mesh, etc.
+
+Afterwards we start calculating towards the next step:
+We Assemble the state equation bilinear form and solve it over this newly deformed mesh. Following this we assemble the linear and bilinear form for the shape derivative and solve for a new deformation. After this is done, one can already use \fun{UnsetDeformation()} and the last thing to do is updating values.
+
+We scale the \var{gfX} to its desired magnitude and subtract it from \var{gfset}. At this point it is also wise to check for some measure of close we are to a good solution and for example increase the parameters for the geometric constraints.
+
+The entire code inside the loop looks like this:
+
+\begin{lstlisting}[language=Python, title=Iteration, label=lst:loop]
+		mesh.SetDeformation(gfset)
+		scene.Redraw()
+		data.append(vol.Get())
+		a.Assemble()
+		solveStokes()
+		b.Assemble()
+		dJOmega.Assemble()
+		SolveDeformationEquation()
+		updateParams()
+		mesh.UnsetDeformation()
+		gfxnorm = Norm(gfX.vec)
+		scale = 0.01 / gfxnorm
+		
+		if(gfxnorm < 1e-5):
+			if alpha.Get() < 1:
+				increaseParams(2,True)
+			else:
+				break
+		gfset.vec.data -= scale * gfX.vec
+\end{lstlisting}
