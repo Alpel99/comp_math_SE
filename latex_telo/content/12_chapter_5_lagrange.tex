@@ -1,0 +1,53 @@
+\subsection{The Lagrangian, State Equation and Geometric Constraints}
+%To solve this the method of Lagrange multipliers is used to find minima or maxima of a function
+
+It is shown in Sturm (2015a) that the shape derivative for a nonlinear PDEconstrained shape optimization problem can be computed as the derivative of the Lagrangian with respect to the perturbation parameter.\cite{fully_semi_paper_sturm}
+
+This Lagrangian is given by the stokes equation with right hand side zero and the shape function $J$.
+For the Stokes equation there are only u and p used, not v and q.
+
+\begin{equation}\label{eq:lagrangian_basic}
+	%L(\Omega,u,p) = 
+    \int_{\Omega} \nabla u : \nabla u \, dx + \int_{\Omega} \mathrm{div}(u)p \, dx + \int_{\Omega} \mathrm{div}(u)p \, dx + \int_{\Omega} Du : Du \, dx
+\end{equation}
+
+Additional to these, there are geometrical constraints which should be enforced: On the one hand the volume has to be constant, because otherwise the obstacle just shrinks to nothing. This would obviously minimize the dissipated energy, but not tell anything useful for the solution.
+
+Secondly, the barycenter of the obstacle should stay constant, because otherwise it could just try to move out of the mesh to minimize the shape function.
+
+Since in our approach only the mesh for the flow outside of the obstacle is generated, we assign those geometric constraints on this mesh and not on the obstacle itself. In general that does not change anything about the problems with these constraints in itself. This is because if the barycenter and volume of the surrounding mesh stay constant, the same is true for the obstacle.
+
+Additional there are scaling parameters added. These are set to a small initial value to get as soon as possible to a deformed shape and later on (when the shape does not change that much anymore) penalize the geometric constraints more, to achieve the real desired shape with the enforced constraints.
+
+To calculate the volume is just integrating the 1 function over the entire domain. $vol = \int_\Omega 1 \mathrm{dx}$
+The barycenter has to be calculated in each possible direction of the domain, the formula for one is: $bc_{xi} = \frac{1}{vol}\int_\Omega x_i \mathrm{dx}$
+
+The formulas are used to calculate the initial value (with the subscript zero) and penalize any deviation from it with a number greater than zero, to steer away from shapes that do not comply these constraints. That is why the difference is squared.
+
+\begin{equation}\label{eq:lagrangian_constraints}
+	%L(\Omega,u,p) += 
+	\alpha (vol-vol_0)^2 + \beta (bc_x-bc_{x0})^2 + \beta (bc_y-bc_{y0})^2
+\end{equation}
+
+\subsubsection{Derivative}
+After we set the Lagrangian up accordingly, we have to calculate its shape derivative.
+In our code for \ref{eq:lagrangian_basic} this is done by using ngsolves implementation of \fun{DiffShape()}. This way we only have to specify what is written in \ref{eq:lagrangian_basic} and the rest is done by ngsolve on its own.
+
+This does not work for the side constraints, because squaring and subtracting with these defined integrals is not straight forward.
+To calculate these by hand, one arrives at the following formulas for the volume:
+
+\begin{equation}\label{eq:constraints_vol}
+	%L(\Omega,u,p) += 
+	2\alpha (vol-vol_0)*div(X)
+\end{equation}
+
+and the barycenter in direction x:
+
+\begin{equation}\label{eq:constraints_bc}
+	%L(\Omega,u,p) += 
+	2\beta (bc_x-bc_{x0})\cdot\left(-\frac{1}{vol^2}\int div(X)\mathrm{dx} \cdot \int x \mathrm{dx} + \frac{1}{vol} \cdot (\int div(X)*x \mathrm{dx} + \int X_i\mathrm{dx})\right)
+\end{equation}
+
+where x is the current direction variable and $X_i$ is the deformation field in the i'th (current) direction.
+
+
