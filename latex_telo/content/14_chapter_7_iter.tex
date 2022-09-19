@@ -1,5 +1,8 @@
 \subsection{Iteration}
 In this chapter we want do describe the process of one iterations which gets repeated time after time until the optimal shape is achieved.
+
+There are a few parameters that are recalculated or conditionally updated through the iterations. This includes the current volume and barycenter values, their respective scalings $\alpha$ and $\beta$, and $gamma$ for the Cauchy Riemann terms that ensure a better mesh quality.
+
 Before we start with the iteration process we reset all possible variables:
 This includes the \var{gfset}, resetting the scene, and to reinitialize the parameters for the geometric constraints. If this step is skipped, one could start with weird variable values that lead to drastically different results.
 
@@ -7,16 +10,19 @@ This includes the \var{gfset}, resetting the scene, and to reinitialize the para
 gfset.Set((0,0))
 mesh.SetDeformation(gfset)
 scene.Redraw()
-
 updateParams()
 alpha0 = 1e-4
-beta0 = 0
+beta0 = 1e-0
+gamma0 = 1e2
 alpha.Set(alpha0)
 beta.Set(beta0)
+gamma.Set(gamma0)
+iter_max = 750
 \end{lstlisting}
 
-Our iteration is just bounded by a maximum number of steps, even though it should be possible to take some measure on the \var{gfX} and determine a stop by it.
+This iteration is bounded by a maximum number of steps, even though it is also be possible to take some measure on the \var{gfX} and determine a stop by it.
 This still requires parameter tuning, especially because some measures could yield different results depending on the mesh width.
+Other possibilities for breaks in the loop are a maximum number for the scaling parameters e.g. $\alpha$ or a very small difference in the drag from one iteration to the next.
 
 Each iteration then starts by calling \fun{SetDeformation(gfset)}, and redrawing needed scenes. This would also be the place to gather data, like the current drag or area of the mesh, etc.
 

@@ -13,21 +13,23 @@ This is done by setting the bilinear form of this problem to the $H^1$ norm.
 
 This always yields a positive value, if we subtract instead of add this value, we minimize the shape function.
 
+\begin{comment}
 % is this even useful?
 \begin{lstlisting}[language=Python, title=Solving For The Deformation, label=lst:deformation_solve]
-def SolveDeformationEquation():
+	def SolveDeformationEquation():
 	rhs = gfX.vec.CreateVector()
 	rhs.data = dJOmega.vec - b.mat * gfX.vec
 	update = gfX.vec.CreateVector()
 	update.data = b.mat.Inverse(VEC.FreeDofs()) * rhs
 	gfX.vec.data += update
 \end{lstlisting}
+\end{comment}
 
 Since the minimization is done in iterations, we have to keep track of the previous deformations. This is done in ngsolve by adding the parts of \var{gfX} to another variable called \var{gfset}. This \var{gfset} is then always used to call \fun{SetDeformation()} on the mesh.
 With each call, this adds the \var{gfset} onto the mesh. To circumvent this, after each iteration \fun{UnsetDeformation()} is called.
 
 To not overshoot anything, instead of adding the entire \var{gfX} to \var{gfset}, it is scaled by a number divided by its norm. That way we can make sure, that each iteration deforms the mesh in small, similar sized steps.
-There is still one inconsistency: the \var{gfX} can also deform nodes inside the mesh, which change nothing for the real solution, but count towards this norm. That problem is solvable, by integrating this \obj{GridFunction} over its boundary. Since the outside of our square are dirichlet boundaries, this way only the changes on the obstacle are measured.
+There is still one inconsistency: the \var{gfX} can also deform nodes inside the mesh, which change nothing for the real solution, but count towards this norm. That problem is solvable, by integrating this \obj{GridFunction} over its boundary. Since the outside of our square are dirichlet boundaries, this way only the changes on the obstacle are measured. Another important thing to be aware of is, that symmetric deformations around an obstacle might cancel each other out in the integral. This is circumvented by calculating with the squared values.
 
 
 
