@@ -4,15 +4,14 @@
 
 This document was created in the context of the Computational Mathematics Seminary
 at the Technical University of Vienna (SE - 3ECTS). In this introduction, the scientific relevance
-of the work is highlighted and a brief overview of the topics covered is given. This overview
-also follows the workflow for a generic shape optimization problem.\\
+of the work is highlighted and a brief overview of the topics covered is given.\\
 
 PDE Constrained Shape Optimization is a topic of interest in almost all engineering fields
 where the relevant phenomena can be described by Partial Differential Equations (PDEs) and
 an optimization problem can be formulated. Here, the stationary linear stokes equations are
 the PDEs and the energy dissipation over the domain is optimized. The optimization can 
 be described by a minimization problem which can be solved with the gradient descent method.
-Its important to note here, that the PDE constraints and optimization goals used here, 
+Its important to note, that the PDE constraints and optimization goals used here, 
 can be exchanged with arbitrary PDE constraints and optimization goals. Some parts,
 especially the proof for shape derrivative existence, can get more complex for e.g. 
 Non-Linear PDEs or Transient PDEs.\\
@@ -22,7 +21,7 @@ A generic PDE constrained optimization problem is of the following form:
 
 \begin{align*}
         \min_{ \Omega \in \mathcal{A} } J( \Omega, u) \\
-        : \mathrm{B}_{\Omega}(u) = 0
+        s.t. \quad \mathrm{B}_{\Omega}(u) = 0
 \end{align*}
 
 Where $\Omega$ is the Domain for the PDE, $\mathcal{A}$ is the set of admissible shapes
@@ -52,25 +51,27 @@ of the auxiliary problem points in the negative direction of the gradient.
 \pagebreak
 
 \subsection*{Optimization Steps}
-The Stokes Equations on the initial domain are solved, the cost functional $J(\Omega)$
-
-
-
-i want to cite \cite{fully_semi_paper_sturm}
-and also \cite{vol_bary_constraint_paper} and also \cite{lecture_notes_sturm} and also \cite{nearly_conformal_paper}, 
-A figure example and a text where I refer to figure \ref{shape_opt_plot} below! Additionally I need other citations like \cite{lecture_notes_faustmann_numPDE}
-as well as \cite{lecture_notes_faustmann_AMF} and \cite{lecture_notes_melenk_numcomp}
-yes yes yes or no? David Kempf
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/solution_shape_opt.PNG}
-	\caption{Velocity magnitude of Stokes flow after shape optimization}
-	\label{shape_opt_plot}
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/energy_diss_plot.pdf}
-	\caption{Velocity magnitude of Stokes flow after shape optimization}
-	\label{shape_opt_plot}
-\end{figure}
+The problem $\mathrm{B}_{\Omega}(u) = 0$ can be solved, the shape derivative $\mathrm{d}J(\Omega)(X)$ can be calculated, the auxilary problem which yields 
+the descent direction $-X$ can be solved as well. In the last step the optimization takes place where one can e.g. use a gradient descent method
+ from \texttt{numpy}.
+ \begin{align*}
+    X \in [C^{0,1}(\Omega)]^2 \quad , \, \mathrm{T}_t(.):= \mathrm{id} + tX \quad , \, \text{choose } t \in \mathbb{R}
+\end{align*}
+Since we chose the gradient descent direction to point in $-X$ direction, the following must hold true for the energy dissipation functional:
+\begin{align*}
+    J(\mathrm{T}_t(\Omega)) <J(\Omega)
+\end{align*}
+\subsection*{Penalty Method}
+If the differentiability of the shape functional has been shown, a method to obtain a numerical result to the minimization problem,
+is by introducing an Augmented Lagrangian, here briefly discussed is the underlying work used Quadratic Penalty Method. Again one considers:
+\begin{align*}
+    \min_{ \Omega} J( \Omega) \quad \text{s.t.} \quad \mathrm{B}_{\Omega}(u) = 0
+\end{align*}
+where $J(.) : \mathbb{R}^n \rightarrow \mathbb{R}$, and $\mathrm{B}_{\Omega}(.):\mathbb{R}^n \rightarrow \mathbb{R}^p$ are differentiable functions.
+If the differentiability has been shown, the quadratic penalty method yields an approximative minimization result:
+\begin{align*}
+    \mathcal{L}_{\alpha}(\Omega) = J(\Omega) + \frac{\alpha}{2}|\mathrm{B}_{\Omega}(u)|^2 \, , \quad \alpha > 0s
+\end{align*}
+For more in depth elaborations on Penalty Methods and Augmented Lagrangian, 
+see Numerical Optimization Lecture Notes from Dr. K. Sturm \cite{lecture_notes_sturm}. This Augmented Lagrangian can now be derived 
+and used for the step direction $-X$.

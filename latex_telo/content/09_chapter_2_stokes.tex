@@ -67,29 +67,13 @@ shown in figure \ref{domain_graphics}, is defined in the beginning in lines 5-11
 
 \pagebreak
 
-\null
-\vfill
-
 \begin{lstlisting}[language=Python, title=Basic Stokes PDE's with Python3 and NGSolve, label=basic_stokes]
-    
-    from ngsolve import *
-    from netgen.geom2d import SplineGeometry
-    from ngsolve.webgui import Draw
-    # Geometry with meshwidth h_m
-    h_m = 0.4
-    geo = SplineGeometry()
-    geo.AddRectangle((-3,-2), (3, 2), bcs=("top", "out", "bot", "in"), leftdomain=1, rightdomain=0)
-    geo.AddCircle(c=(0, 0), r=0.5, leftdomain=0, rightdomain=1, bc="cyl", maxh=h_m) 
-    mesh = Mesh(geo.GenerateMesh(maxh=h_m))
-    mesh.Curve(3);
-    # Setting up appropriate Function Spaces and boundary Conditions
     k = 2
     V = H1(mesh,order=k, dirichlet="top|bot|cyl|in|out")
     Q = H1(mesh,order=k-1)
-    FES = FESpace([V,V,Q]) # Omitting command VectorH1 --> [V,Q] 
+    FES = FESpace([V,V,Q])
     ux,uy,p = FES.TrialFunction()
     vx,vy,q = FES.TestFunction()
-    # stokes equation
     def Equation(ux,uy,p,vx,vy,q):
         div_u = grad(ux)[0]+grad(uy)[1] # custom divergence u
         div_v = grad(vx)[0]+grad(vy)[1] # custom divergence v
@@ -97,40 +81,25 @@ shown in figure \ref{domain_graphics}, is defined in the beginning in lines 5-11
     a = BilinearForm(FES)
     a += Equation(ux,uy,p,vx,vy,q)
     a.Assemble()
-    # Assign non-zero Dirichlet boundary conditions u_inf
     gfu = GridFunction(FES)
     uinf = 0.001
     uinf_c = CoefficientFunction((uinf))
     gfu.components[0].Set(uinf_c, definedon=mesh.Boundaries("in|top|bot|out"))
-    # Define Linear Equation System
     def solveStokes():
     res = gfu.vec.CreateVector()
     res.data = -a.mat * gfu.vec
     inv = a.mat.Inverse(FES.FreeDofs())
     gfu.vec.data += inv * res
     scene_state.Redraw()
-    # Solve LES and plot norm of u
-    solveStokes()
-    u_vec = CoefficientFunction((gfu.components[0], gfu.components[1])) 
-    Draw(u_vec, mesh, "vel", draw_surf=True)
-
 \end{lstlisting}
-
-\vfill
-\null
-
-
-\pagebreak
 
 Below the solution obtained with NGSolve (see listing \ref{basic_stokes}). On the surface of the cylinder, 
 the no-slip condition (standard Dirichlet = 0) can be observed. Also an intuitive observation of the fulfilled continuity can be made:
 where the cross section is smaller, e.g. in $x$ vicinity of the cylinder, the velocity is increased:
 
-\null
-
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1\textwidth]{figures/solution_stokes_basic.PNG}
+    \includegraphics[width=0.92\textwidth]{figures/solution_stokes_basic.PNG}
 	\caption{Surface Plot - Velocity $||\mathbf{u}||_2$ of Stokes Flow - FEM solution to problem (\ref{stokes_PDE})}
 	\label{basic_stokes_flow_plot}
 \end{figure}
