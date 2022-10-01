@@ -2,6 +2,44 @@
 % hier das generelle minimization Beispiel rein
 % was war der unterschied mit den beiden unterschiedlichen J's, wo sturmi nicht happy war?
 
+This document was created in the context of the Computational Mathematics Seminary
+at the Technical University of Vienna (SE - 3ECTS). In this introduction, the scientific relevance
+of the work is highlighted and a brief overview of the topics covered is given. This overview
+also follows the workflow for a generic shape optimization problem.\\
+
+PDE Constrained Shape Optimization is a topic of interest in almost all engineering fields
+where the relevant phenomena can be described by Partial Differential Equations (PDEs) and
+an optimization problem can be formulated. Here, the stationary linear stokes equations are
+the PDEs and the energy dissipation over the domain is optimized. The optimization can 
+be described by a minimization problem which can be solved with the gradient descent method.
+Its important to note here, that the PDE constraints and optimization goals used here, 
+can be exchanged with arbitrary PDE constraints and optimization goals. Some parts,
+especially the proof for shape derrivative existence, can get rather messy for e.g. 
+Non-Linear PDEs or Transient PDEs.\\
+
+\subsection*{Minimization Problem}
+A generic PDE constrained optimization problem is of the following form:
+
+\begin{align*}
+        \min_{ \Omega \in \mathcal{A} } J( \Omega, u) \\
+        : \mathrm{B}_{\Omega}(u) = 0
+\end{align*}
+
+Where $\Omega$ is the Domain for the PDE, $\mathcal{A}$ is the set of admissible shapes
+$J(\Omega, u)$ is a functional that is to be minimized and $\mathrm{B}_{\Omega}(u)$ is the PDE
+constraint and its solution $u$. The Domain $\Omega$ is what is going to be 
+optimized in the underlying work. \\
+
+\subsection*{Shape Derrivative}
+In order to find a numerical solution to the minimization problem with the gradient descent
+method, the existence of the analytical shape derrivative needs to be shown. Here the
+differentiability of $J(\Omega,u)$ at $\Omega \in \mathcal{A}$ in direction $X$ is shown. 
+As Sturm et. al. \cite{nearly_conformal_paper} have shown, the functional 
+$J(\Omega, u)$ can be reduced to a functional $J(\Omega)$ and the shape derrivative 
+$\mathrm{d}J(\Omega)(X)$ exists. In chapter \ref*{}, the proof is recapitulated briefly.
+
+
+
 i want to cite \cite{fully_semi_paper_sturm}
 and also \cite{vol_bary_constraint_paper} and also \cite{lecture_notes_sturm} and also \cite{nearly_conformal_paper}, 
 A figure example and a text where I refer to figure \ref{shape_opt_plot} below! Additionally I need other citations like \cite{lecture_notes_faustmann_numPDE}
