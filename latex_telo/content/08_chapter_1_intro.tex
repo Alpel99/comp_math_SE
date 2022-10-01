@@ -14,7 +14,7 @@ the PDEs and the energy dissipation over the domain is optimized. The optimizati
 be described by a minimization problem which can be solved with the gradient descent method.
 Its important to note here, that the PDE constraints and optimization goals used here, 
 can be exchanged with arbitrary PDE constraints and optimization goals. Some parts,
-especially the proof for shape derrivative existence, can get rather messy for e.g. 
+especially the proof for shape derrivative existence, can get more complex for e.g. 
 Non-Linear PDEs or Transient PDEs.\\
 
 \subsection*{Minimization Problem}
@@ -37,6 +37,22 @@ differentiability of $J(\Omega,u)$ at $\Omega \in \mathcal{A}$ in direction $X$ 
 As Sturm et. al. \cite{nearly_conformal_paper} have shown, the functional 
 $J(\Omega, u)$ can be reduced to a functional $J(\Omega)$ and the shape derrivative 
 $\mathrm{d}J(\Omega)(X)$ exists. In chapter \ref*{}, the proof is recapitulated briefly.
+
+\subsection*{Auxiliary Problem - Descent Direction}
+To find the gradient descent direction, here the vectorfield $-X$, an auxiliary problem needs to be solved.
+Since its solved with the Finite Element Method libary NGSolve, the PDE problem is posed in a weak sense where 
+$H$ is e.g. a Sobolov space.find $X \in [H(\Omega)]^2:$ 
+\begin{align*}
+    \mathrm{d}J(\Omega)(X) = \mathrm{b}(X,\varphi)_H \quad \forall  \varphi \in H
+\end{align*}
+
+If the bi-linear form $\mathrm{b}(.,.)_H$ is chosen such that it is positive definite, the negative solution $X$
+of the auxiliary problem points in the negative direction of the gradient.
+
+\pagebreak
+
+\subsection*{Optimization Steps}
+The Stokes Equations on the initial domain are solved, the cost functional $J(\Omega)$
 
 
 
