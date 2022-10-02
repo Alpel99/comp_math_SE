@@ -18,12 +18,10 @@ Non-Linear PDEs or Transient PDEs.\\
 
 \subsection*{Minimization Problem}
 A generic PDE constrained optimization problem is of the following form:
-
 \begin{align*}
         \min_{ \Omega \in \mathcal{A} } J( \Omega, u) \\
         s.t. \quad \mathrm{B}_{\Omega}(u) = 0
 \end{align*}
-
 Where $\Omega$ is the Domain for the PDE, $\mathcal{A}$ is the set of admissible shapes
 $J(\Omega, u)$ is a functional that is to be minimized and $\mathrm{B}_{\Omega}(u)$ is the PDE
 constraint and its solution $u$. The Domain $\Omega$ is what is going to be 
@@ -40,11 +38,10 @@ $\mathrm{d}J(\Omega)(X)$ exists. In chapter \ref*{}, the proof is recapitulated 
 \subsection*{Auxiliary Problem - Descent Direction}
 To find the gradient descent direction, here the vectorfield $-X$, an auxiliary problem needs to be solved.
 Since its solved with the Finite Element Method libary NGSolve, the PDE problem is posed in a weak sense where 
-$H$ is e.g. a Sobolov space.find $X \in [H(\Omega)]^2:$ 
+$H$ is e.g. a Sobolov space. Find $X \in [H(\Omega)]^2:$ 
 \begin{align*}
     \mathrm{d}J(\Omega)(X) = \mathrm{b}(X,\varphi)_H \quad \forall  \varphi \in H
 \end{align*}
-
 If the bi-linear form $\mathrm{b}(.,.)_H$ is chosen such that it is positive definite, the negative solution $X$
 of the auxiliary problem points in the negative direction of the gradient.
 

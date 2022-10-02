@@ -1,7 +1,5 @@
-\subsection{Shape Derivative}\label{}
-The shape derivative is needed to find a shape that minimizes the given functional.
 
-\subsubsection{Descent Direction}
-%Auxillary Problem?
-To do some sort of gradient descent we need a negative descent direction. To achieve this we solve the deformation for a positive definite right hand side, which than can be subtracted to achieve a negative direction.
-The easiest solution for this is the use of the H1-norm.
+\subsection{Shape Derivative in NGSolve}
+Since its shown in the previous chapter that the shape derivative $\mathrm{d}J(\Omega)(X)$ actually exists, a formulation
+that yields an approxmimate minimizer for the problem at hand can be used. The quadratic penalty method is used 
+as the augmented Lagrangian, the formulation for approximate minimizer of (\ref*{energy_dissipation_equation}).
