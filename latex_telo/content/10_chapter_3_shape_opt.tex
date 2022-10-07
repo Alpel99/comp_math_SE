@@ -1,5 +1,5 @@
 \section{Shape Derivative}
-\subsection{Differentiability}
+\subsection{Differentiability Proof}
 
 \vfill
 
@@ -23,7 +23,7 @@ Shape Derivative of $J$ at $\Omega$ in direction $ X \in [C^{0,1}(\bar{\Omega})]
 	\mathrm{I}_2 + \mathrm{D} \mathbf{u}^{\top}p - \mathrm{D} \mathbf{u}^{\top} \mathrm{D} \mathbf{u}
 \end{align}
 where $(\mathbf{u},p)$ solve (\ref*{weak_stokes_PDE_product})
-\begin{theorem}
+\begin{theorem*}
 let $X \in [C^{0,1}(\bar{\Omega})]^2$ with $X = 0$ on $\Gamma_{\infty}$ be a given vectorfield. \\
 Set $\mathrm{T}_t(.) := \mathrm{id} + tX $ , with $t \in \mathbb{R}$ and $\Omega_t := \mathrm{T}_t(\Omega)$, where 
 $(\mathbf{u}_t, p_t)$ solve (\ref{weak_stokes_PDE_product}) and $\Omega$ is replaced by $\Omega_t$ s.t. \\
@@ -70,5 +70,5 @@ see K. Ito et. al. \cite{lagrangian_derivative}. With the derivative of the Lagr
 	\frac{\partial}{\partial t}\mathcal{L}(0,\mathbf{u},p) = \int_{\Omega} \mathrm{S}_1 : \mathrm{D}X \, \mathrm{dx} 
 \end{align}
 \qed
-\end{theorem}
+\end{theorem*}
 

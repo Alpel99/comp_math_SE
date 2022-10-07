@@ -1,4 +1,4 @@
-\subsection{The Lagrangian, State Equation and Geometric Constraints}
+\section{Augmented Lagrangian and Geometric Constraints}
 %To solve this the method of Lagrange multipliers is used to find minima or maxima of a function
 
 It is shown in Sturm (2015a) that the shape derivative for a nonlinear PDEconstrained shape optimization problem can be computed as the derivative of the Lagrangian with respect to the perturbation parameter.\cite{fully_semi_paper_sturm}
@@ -8,7 +8,7 @@ For the Stokes equation there are only u and p used, not v and q.
 
 \begin{equation}\label{eq:lagrangian_basic}
 	%L(\Omega,u,p) = 
-    \int_{\Omega} \nabla u : \nabla u \, dx + \int_{\Omega} \mathrm{div}(u)p \, dx + \int_{\Omega} \mathrm{div}(u)p \, dx + \int_{\Omega} Du : Du \, dx
+    \mathcal{L}(\Omega) = \int_{\Omega} \nabla u : \nabla u \, dx + \int_{\Omega} \mathrm{div}(u)p \, dx + \int_{\Omega} \mathrm{div}(u)p \, dx + \int_{\Omega} Du : Du \, dx
 \end{equation}
 
 Additional to these, there are geometrical constraints which should be enforced: On the one hand the volume has to be constant, because otherwise the obstacle just shrinks to nothing. This would obviously minimize the dissipated energy, but not tell anything useful for the solution.
@@ -29,7 +29,7 @@ The formulas are used to calculate the initial value (with the subscript zero) a
 	\alpha (vol-vol_0)^2 + \beta (bc_x-bc_{x0})^2 + \beta (bc_y-bc_{y0})^2
 \end{equation}
 
-\subsubsection{Derivative}
+\subsection{Derivative}
 After we set the Lagrangian up accordingly, we have to calculate its shape derivative.
 In our code for \ref{eq:lagrangian_basic} this is done by using ngsolves implementation of \fun{DiffShape()}. This way we only have to specify what is written in \ref{eq:lagrangian_basic} and the rest is done by ngsolve on its own.
 
