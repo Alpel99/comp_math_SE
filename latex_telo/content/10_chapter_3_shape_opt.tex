@@ -1,6 +1,4 @@
-\section{Shape Derivative}
-\subsection{Differentiability Proof}
-
+\section{Shape Derivative - Differentiability}
 \vfill
 
 As explained in the introduction, the existence of the shape derivative needs to be shown.
@@ -56,7 +54,7 @@ is taken into account by the transformation theorem. The minimum of (\ref{energy
 satisfies the saddlepoint problem (\ref{trafo_weak_stokes}). It can be obtained with the Lagrange Multiplier method, 
 see Faustmann \cite{lecture_notes_faustmann_numPDE}. The corresponding Lagrangian which can be used to minimize (\ref{energy_dissipation_equation})
 is:
-\begin{equation}
+\begin{equation}\label{parametrized_lagrangian}
  \begin{aligned}
 	\mathcal{L}(t,\mathbf{v}, q) = \frac{1}{2}& \int_{\Omega} \mathrm{det}(\mathrm{DT}_t) \mathrm{D} \mathbf{v}(\mathrm{DT}_t)^{-1} :
 	\mathrm{D} \mathbf{v}(\mathrm{DT}_t)^{-1} \, \mathrm{dx} \\
@@ -71,4 +69,3 @@ see K. Ito et. al. \cite{lagrangian_derivative}. With the derivative of the Lagr
 \end{align}
 \qed
 \end{theorem*}
-
