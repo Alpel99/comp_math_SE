@@ -16,7 +16,7 @@ If one minimizes this problem, one can observe: the numerical scheme will just m
 result in a minimization of the drag as well. This is not a trivial result but also not a result of interest. Therefore one analyzes the 
 volume and barycenter of the obstacle and formulates terms that penalize deviations from the initial values of the volume and barycenter.
 \begin{align}
-    \mathrm{vol}(\Omega) &= \int_{\Omega} 1 \ \mathrm{dx} \in \mathbb{R} \\
+    \mathrm{vol}(\Omega) &= \int_{\Omega} 1 \ \mathrm{dx} \in \mathbb{R} \label{vol_equation}\\
     \mathcal{L}^2_{\mathrm{vol}}(\Omega) &= \alpha \ \Big( \mathrm{vol}( \mathbf{T}_{t}(\Omega) )-\mathrm{vol}(\Omega_0) \Big) ^2
 \end{align}
 The quantity $\mathcal{L}_{\mathrm{vol}}(\Omega)$ is a quadratically penalized term that is easy to derrive and is used to formulate 
@@ -31,7 +31,7 @@ Since it is a vectorial quantity, the integral is decomposed into its components
     \mathrm{bc}_x(\Omega) &=
     \frac{1}{\mathrm{vol}(\Omega)}\int_{\Omega} x \ \mathrm{dx} \, , \quad 
     \mathrm{bc}_y(\Omega) =
-    \frac{1}{\mathrm{vol}(\Omega)}\int_{\Omega} y \ \mathrm{dx} \\
+    \frac{1}{\mathrm{vol}(\Omega)}\int_{\Omega} y \ \mathrm{dx} \label{bc_equation}\\
 	\mathcal{L}^2_{\mathrm{bc}}(\Omega) &= \beta \Big( \mathrm{bc}_x( \mathbf{T}_{t}(\Omega) )-\mathrm{bc}_x(\Omega_0) \Big)^2 + 
 	\gamma\Big( \mathrm{bc}_y( \mathbf{T}_{t}(\Omega) )-\mathrm{bc}_y(\Omega_0) \Big)^2
 \end{align}
