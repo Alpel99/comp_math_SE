@@ -12,3 +12,64 @@ Even without the barycenter constraint we were able to achieve this solution aft
 % figure olive
 
 The derived shape derivative of the paper \cite{nearly_conformal_paper} does not show the same behavior as the one created from \fun{DiffShape()}. That means we were also not able to create a solution that looks similar to the one before.
+
+\begin{figure}
+\begin{minipage}{.5\textwidth}
+    \centering
+    \includegraphics[width=1\textwidth]{figures/u_0.PNG}
+    \caption{ $\mathbf{||u||_2}$ on $\Omega_{\mathrm{n}}$ for $\mathrm{n}=0$}
+    \label{plot_ref_u_0}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+    \centering
+    \includegraphics[width=1\textwidth]{figures/u_final.PNG}
+    \caption{ $\mathbf{||u||_2}$ on $\Omega_{\mathrm{n}}$ for $\mathrm{n}=800$}
+    \label{plot_ref_u_final}
+\end{minipage}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.95\textwidth]{figures/energy_diss_plot.pdf}
+        \caption{Evaluation of Energy Dissipation on $\Omega$}
+        \label{plot_ref_energy_diss}
+    \end{center}
+\end{figure}
+
+\begin{figure}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/bc_x__plot.pdf}
+        \caption{$x$ Component of Barycenter of $\Omega$}
+        \label{plot_ref_bc_x}
+    \end{minipage}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/bc_y_plot.pdf}
+        \caption{$y$ Component of Barycenter of $\Omega$}
+        \label{plot_ref_bc_y}
+    \end{minipage}
+    \end{figure}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.95\textwidth]{figures/volume_plot.pdf}
+        \caption{Volume of $\Omega$}
+        \label{plot_ref_volume}
+    \end{center}
+\end{figure}
+
+\begin{figure}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/gfxnorm_plot.pdf}
+        \caption{Norm of $X$ on Domain}
+        \label{plot_ref_norm}
+    \end{minipage}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/gfx_bndnorm_plot.pdf}
+        \caption{Norm of $X$ on Boundary}
+        \label{plot_ref_bndnorm}
+    \end{minipage}
+    \end{figure}
