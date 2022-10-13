@@ -35,7 +35,7 @@ it needs to be transformed to the weak formulation, where the solutions $u$ and 
 See Faustmann\cite{lecture_notes_faustmann_numPDE} Chapter 3 for further elaborations on Sobolev spaces. The weak formulation can be derrived by
 multipling the now called trial-functions $u$ and $p$ with test-functions $v$ and $q$, perform transformations and integrate them. The test-functions have to fulfil certain
 conditions to permit the transformations in order to arrive at a weak problem with 
-linear convergence rates, see Faustmann\cite{lecture_notes_faustmann_numPDE}: \\
+linear convergence rates, see Faustmann \cite{lecture_notes_faustmann_numPDE}: \\
 
 Find $u \in [H^1_0(\Omega)]^d$ and $p \in L^2(\Omega)$ such that
 \begin{equation}\label{weak_stokes_PDE}
@@ -48,7 +48,7 @@ Find $u \in [H^1_0(\Omega)]^d$ and $p \in L^2(\Omega)$ such that
 \null
 
 Instead of considering this as a system of equations, one can look at the mixed method as one variational problem on
-the product spaces $[H^1_0(\Omega)]^d \times L^2(\Omega)$, this is done by just adding both problems \cite{lecture_notes_faustmann_numPDE}:
+the product space $[H^1_0(\Omega)]^d \times L^2(\Omega)$, this is done by just adding both problems \cite{lecture_notes_faustmann_numPDE}:
 
 \null
 
@@ -68,7 +68,7 @@ shown in figure \ref{domain_graphics}, is defined in the beginning in lines 5-11
 
 \pagebreak
 
-\begin{lstlisting}[language=Python, title=Basic Stokes PDE's with Python3 and NGSolve, label=basic_stokes]
+\begin{lstlisting}[language=Python, title=Basic Stokes PDE's with NGSolve in Python, label=basic_stokes]
     k = 2
     V = H1(mesh,order=k, dirichlet="top|bot|cyl|in|out")
     Q = H1(mesh,order=k-1)

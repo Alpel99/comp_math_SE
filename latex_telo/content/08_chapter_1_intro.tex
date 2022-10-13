@@ -14,6 +14,14 @@ can be exchanged with arbitrary PDE constraints and optimization goals. Some par
 especially the proof for shape derrivative existence, can get more complex for e.g. 
 Non-Linear PDEs or Transient PDEs.\\
 
+\subsection*{NGSolve}
+The practical implementation part is done in NGSolve, which is a object oriented python Finite Element
+Method library with automatic differentiation capabilites. The mathematical formulations in this document 
+can mostly be implemented directly, as one can see in either in appendix APPENDIX or in the associated
+Jupyter Notebook file. Gangl et. al. \cite{fully_semi_paper_sturm} have shown the PDE Constrained 
+Optimization capabilites of NGSolve. For more in-depth explanations and examples on NGSolve 
+visit \href{https://ngsolve.org/}{ngsolve.org}.
+
 \subsection*{Minimization Problem}
 A generic PDE constrained optimization problem is of the following form:
 \begin{align*}
@@ -33,6 +41,8 @@ As Sturm et. al. \cite{nearly_conformal_paper} have shown, the functional
 $J(\Omega, u)$ can be reduced to a functional $J(\Omega)$ and the shape derrivative 
 $\mathrm{d}J(\Omega)(X)$ exists. In chapter \ref*{}, the proof is recapitulated briefly.
 
+\pagebreak
+
 \subsection*{Auxiliary Problem - Descent Direction}
 To find the gradient descent direction, here the vectorfield $-X$, an auxiliary problem needs to be solved.
 Since its solved with the Finite Element Method libary NGSolve, the PDE problem is posed in a weak sense where 
@@ -42,8 +52,6 @@ $H$ is e.g. a Sobolov space. Find $X \in [H(\Omega)]^2:$
 \end{align*}
 If the bi-linear form $\mathrm{b}(.,.)_H$ is chosen such that it is positive definite, the negative solution $X$
 of the auxiliary problem points in the negative direction of the gradient.
-
-\pagebreak
 
 \subsection*{Optimization Steps}
 The problem $\mathrm{B}_{\Omega}(u) = 0$ can be solved, the shape derivative $\mathrm{d}J(\Omega)(X)$ can be calculated, the auxilary problem which yields 
