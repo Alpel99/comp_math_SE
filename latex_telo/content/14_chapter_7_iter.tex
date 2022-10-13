@@ -72,3 +72,23 @@ The entire code inside the loop looks like this:
 \end{lstlisting}
 
 It is also possible to implement some sort of line search for the step size, similar to the armijo rule. This way one can do less iterations but take better/bigger steps, being more efficient in regards to computational efforts. More to this can be read in ...
+
+\begin{algorithm}
+	\caption{An algorithm with caption as well}
+	\begin{algorithmic}
+	\State \fun{resetDeformation}
+	\State \fun{initializeParameters}
+	\For{$\mathrm{i} < \mathrm{iter}_{\mathrm{max}}$}
+		\State SolveStokes() \Comment{Solve Stokes on $\Omega_i$}
+		\State SolveDeformationEquation() \Comment{Solve Auxiliary Problem on $\Omega_i$, yields $X$}
+		\State Evaluate \fun{gfxbndnorm} = $ || X ||_{\mathrm{L}^2(\Gamma_{\infty , \mathrm{n}})} $
+		\If{\fun{gfxbndnorm} $<$ $\varepsilon$} 
+			\State \fun{increaseScalingParameters}
+		\If{\fun{parameterTooBig}}
+			\State \fun{break}
+		\EndIf
+		\EndIf
+		\State Set $\Omega_i$ to $\Omega_{i+1} = \Omega_i - X \cdot scale$
+	\EndFor
+	\end{algorithmic}
+\end{algorithm}
