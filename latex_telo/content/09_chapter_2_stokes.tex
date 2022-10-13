@@ -40,8 +40,8 @@ linear convergence rates, see Faustmann\cite{lecture_notes_faustmann_numPDE}: \\
 Find $u \in [H^1_0(\Omega)]^d$ and $p \in L^2(\Omega)$ such that
 \begin{equation}\label{weak_stokes_PDE}
     \begin{aligned}
-    &\int_{\Omega} \nabla u : \nabla v \, dx + \int_{\Omega} \mathrm{div}(v)p \, dx &=& \, 0 &\forall& v \in [H^1_0(\Omega)]^d \\
-    &\int_{\Omega} \mathrm{div}(u)q \, dx &=& \, 0   &\forall& q \in L^2(\Omega)
+    &\int_{\Omega} \nabla \mathbf{u} : \nabla \mathbf{v} \, dx + \int_{\Omega} \mathrm{div}(\mathbf{v})p \, dx &=& \, 0 &\forall& \mathbf{v} \in [H^1_0(\Omega)]^d \\
+    &\int_{\Omega} \mathrm{div}(\mathbf{u})q \, dx &=& \, 0   &\forall& q \in L^2(\Omega)
     \end{aligned}
 \end{equation}
 
@@ -53,7 +53,8 @@ the product spaces $[H^1_0(\Omega)]^d \times L^2(\Omega)$, this is done by just 
 \null
 
 \begin{equation}\label{weak_stokes_PDE_product}
-    \int_{\Omega} \nabla u : \nabla v \, dx + \int_{\Omega} \mathrm{div}(v)p \, dx + \int_{\Omega} \mathrm{div}(u)q \, dx = \, 0 \quad \forall (v,q)
+    \int_{\Omega} \nabla \mathbf{u} : \nabla \mathbf{v} \, dx + \int_{\Omega} \mathrm{div}(\mathbf{v})p \, 
+    dx + \int_{\Omega} \mathrm{div}(\mathbf{u})q \, dx = \, 0 \quad \forall (\mathbf{v},q)
     \in  [H^1_0(\Omega)]^d \times L^2(\Omega)
 \end{equation}
 

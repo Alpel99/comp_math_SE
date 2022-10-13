@@ -1,4 +1,5 @@
 \section{Results and Conclusion}
+\subsection{General Results and Agreement with Literature}
 \begin{figure}[h]
 \begin{minipage}{.5\textwidth}
     \centering
@@ -84,6 +85,8 @@ further.
 
 \pagebreak
 
+\subsection{Cauchy-Riemann Constraint Impact on Mesh and Shape}
+
 \begin{figure}[h]
     \begin{minipage}{.5\textwidth}
         \centering
@@ -98,7 +101,6 @@ further.
         \label{plot_ref_bad_mesh_u}
     \end{minipage}
 \end{figure}
-
 \begin{figure}[h]
     \begin{minipage}{.5\textwidth}
         \centering
@@ -114,21 +116,30 @@ further.
     \end{minipage}
 \end{figure}
 
+In figures \ref{plot_ref_good_mesh_u} - \ref{plot_ref_element_bad}, the impact of the Cauchy-Riemann 
+constraint can be observed. The mesh in figure \ref{plot_ref_bad_mesh_u} adjacent to the obstacle is
+highly distorted and the solutions $(\mathbf{u},p)$ therefore not reliable anymore. The element quality 
+at the tips is approximately 3000 without the CR constraint, as shown in figure \ref{plot_ref_element_bad}.
+With applied CR constraint with $\alpha = 150$, the minimization after 800 iterations results in a acceptable
+element quality distribution, as shown in figures \ref{plot_ref_good_mesh_u} and \ref{plot_ref_element_good}.
+
+\pagebreak
+
+\subsection{Cauchy-Riemann Constraint on Convergence Behaviour}
 \begin{figure}[h]
     \begin{minipage}{.5\textwidth}
         \centering
         \includegraphics[width=1\textwidth]{figures/energy_diss_plot.pdf}
         \caption{Energy Diss. with CR Constraint}
-        \label{plot_ref_norm}
+        \label{plot_ref_energy_diss_good}
     \end{minipage}
     \begin{minipage}{.5\textwidth}
         \centering
         \includegraphics[width=1\textwidth]{figures/energy_diss_plot_bad.pdf}
         \caption{Energy Diss. without CR Constraint}
-        \label{plot_ref_bndnorm}
+        \label{plot_ref_energy_diss_bad}
     \end{minipage}
 \end{figure}
-
 \begin{figure}[h]
     \begin{minipage}{.5\textwidth}
         \centering
@@ -143,7 +154,6 @@ further.
         \label{plot_ref_bc_y_bad}
     \end{minipage}
 \end{figure}
-
 \begin{figure}[h]
     \begin{minipage}{.5\textwidth}
         \centering
@@ -159,5 +169,10 @@ further.
     \end{minipage}
 \end{figure}
 
+In figure \ref{plot_ref_energy_diss_bad}, the energy dissipation increases again after 200 iterations,
+while the $y$-barycenter in figure \ref{plot_ref_bc_y_bad} and the volume of $\Omega$ 
+Figure \ref{plot_ref_vol_bad} are not nearly in the vicinity of the desired initial values.
+For this PDE-Constrained Shape optimization setup, the CR-Equations are therefore even needed,
+since no convergence can be observed without them for all tracked quantities.
 
 \pagebreak
