@@ -1,19 +1,5 @@
 \section{Results and Conclusion}
-The implementation with automatic differentiation from ngsolve is not extremely complicated but not as straight forward as one would hope for. A big problem with this approach are the different types of objects in ngsolve, namely \obj{float}, \obj{CoefficientFunction}, \obj{Parameter} and \obj{SumOfIntegrals}, which are not easy to concatenate the right way to achieve the desirable function.
-This does not occur for the stokes equation or shape function, but complex side constraints are tougher than necessary.
-
-The \fun{DiffShape()} function helps to eliminate the need to derive and transform the terms in the Lagrangian ourselves, but is e.g. not usable for \obj{VectorH1} functions. 
-With the automatic Differentiation we were able to achieve the desired form:
-The volume constraint is very important for this piece and is possible to be implemented with and or without differentiation. This was also showed in a programming example, that this term on its own can deform any shape to the desired volume.
-On the other hand, the barycenter constraint does not hold up to its expectations. None of our implemented terms does give the desired functionality and others we are not able to implement in ngsolve.
-
-Even without the barycenter constraint we were able to achieve this solution after 300 iterations:
-
-% figure olive
-
-The derived shape derivative of the paper \cite{nearly_conformal_paper} does not show the same behavior as the one created from \fun{DiffShape()}. That means we were also not able to create a solution that looks similar to the one before.
-
-\begin{figure}
+\begin{figure}[h]
 \begin{minipage}{.5\textwidth}
     \centering
     \includegraphics[width=1\textwidth]{figures/u_0.PNG}
@@ -28,14 +14,34 @@ The derived shape derivative of the paper \cite{nearly_conformal_paper} does not
 \end{minipage}
 \end{figure}
 
-\begin{figure}
+In the figures \ref{plot_ref_u_0} and \ref{plot_ref_u_final} above, the initial and final domains $\Omega$ 
+show good agreement with the results obtained by Sturm et. al. \cite{fully_semi_paper_sturm} where the 
+tips of the ogive show approximately 45 degree angles. The constraint for near conformality posed in equation
+(\ref{eq_conf_aux}) also yields acceptable mesh quality at the tips, where the mesh withouth these contraints
+would result in a self intersecting mesh. This renders the Stokes solution $(\mathbf{u},p)$ useless locally.
+
+\begin{figure}[h]
     \begin{center}
-        \includegraphics[width=0.95\textwidth]{figures/energy_diss_plot.pdf}
+        \includegraphics[width=1\textwidth]{figures/energy_diss_plot.pdf}
         \caption{Evaluation of Energy Dissipation on $\Omega$}
         \label{plot_ref_energy_diss}
     \end{center}
 \end{figure}
 
+In figure \ref{plot_ref_energy_diss}, convergence of the minimization problem can be observed. However, not
+only convergence with respect tho the energy minimization is relevant in the posed problem. Since the 
+Augmented Lagrangian (\ref{final_aug_lagrange}) also tracks the quantities $\mathrm{vol}(\Omega_{\mathrm{n}}), \,
+\mathrm{\mathrm{bc}_x(\Omega_{\mathrm{n}})}, \, \mathrm{bc}_y(\Omega_{\mathrm{n}})$ by keeping them constant or rather penalize
+deviations from the initial value, investigation of these values are also done subsequently.
+
+\pagebreak
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{figures/volume_plot.pdf}
+        \caption{Volume of $\Omega$}
+        \label{plot_ref_volume}
+    \end{center}
+\end{figure}
 \begin{figure}
     \begin{minipage}{.5\textwidth}
         \centering
@@ -51,15 +57,12 @@ The derived shape derivative of the paper \cite{nearly_conformal_paper} does not
     \end{minipage}
     \end{figure}
 
-\begin{figure}
-    \begin{center}
-        \includegraphics[width=0.95\textwidth]{figures/volume_plot.pdf}
-        \caption{Volume of $\Omega$}
-        \label{plot_ref_volume}
-    \end{center}
-\end{figure}
-
-\begin{figure}
+In figure \ref{plot_ref_volume}, oscillations around the initial value $\mathrm{vol}(\Omega_0)$ can be
+be observed, which further underlines the approximative character of the Augmented Lagrangian Method
+(\ref{final_aug_lagrange}). The same behaviour can be observed for the barycenters in $x$ and $y$
+directions, which for a symmetric domain $\Omega$ with respects to the coordinate system should
+both be 0.
+\begin{figure}[h]
     \begin{minipage}{.5\textwidth}
         \centering
         \includegraphics[width=1\textwidth]{figures/gfxnorm_plot.pdf}
@@ -72,4 +75,89 @@ The derived shape derivative of the paper \cite{nearly_conformal_paper} does not
         \caption{Norm of $X$ on Boundary}
         \label{plot_ref_bndnorm}
     \end{minipage}
-    \end{figure}
+\end{figure}
+
+In figures \ref{plot_ref_norm} and \ref{plot_ref_bndnorm} the $L^2$ norms on the domain
+and the obstacle boundary are evaluated. These quantities have similar shape but a scaling factor of 2 
+in between. In a subsequent Seminary Project, one could investigate their scaling impact for the iterations
+further.
+
+\pagebreak
+
+\begin{figure}[h]
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.97\textwidth]{figures/mesh_good.PNG}
+        \caption{Final $\Omega$ with CR Constraint}
+        \label{plot_ref_good_mesh_u}
+    \end{minipage}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/mesh_bad.PNG}
+        \caption{Final $\Omega$ without CR Constraint}
+        \label{plot_ref_bad_mesh_u}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/element_quality_hist.pdf}
+        \caption{Element Quality with CR Constraint}
+        \label{plot_ref_element_good}
+    \end{minipage}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/element_quality_hist_bad.pdf}
+        \caption{Element Quality without CR Constraint}
+        \label{plot_ref_element_bad}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/energy_diss_plot.pdf}
+        \caption{Energy Diss. with CR Constraint}
+        \label{plot_ref_norm}
+    \end{minipage}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/energy_diss_plot_bad.pdf}
+        \caption{Energy Diss. without CR Constraint}
+        \label{plot_ref_bndnorm}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/bc_y_plot.pdf}
+        \caption{$y$-Barycenter with CR Constraint}
+        \label{plot_ref_bc_y_good}
+    \end{minipage}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/bc_y_plot_bad.pdf}
+        \caption{$y$-Barycenter without CR Constraint}
+        \label{plot_ref_bc_y_bad}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/volume_plot.pdf}
+        \caption{Volume with CR Constraint}
+        \label{plot_ref_vol_good}
+    \end{minipage}
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figures/volume_plot_bad.pdf}
+        \caption{Volume wihtout CR Constraint}
+        \label{plot_ref_vol_bad}
+    \end{minipage}
+\end{figure}
+
+
+\pagebreak
