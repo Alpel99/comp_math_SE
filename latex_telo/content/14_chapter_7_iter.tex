@@ -1,94 +1,35 @@
-\section{Iteration}
+\section{Gradient Descent Method Iterations}
 
-Since the minimization is done in iterations, we have to keep track of the previous 
-deformations. This is done in ngsolve by adding the parts of \var{gfX} to another 
+Since the minimization is done with the Gradient Descent Method iteratively, one has to keep track of the previous 
+deformations. This is done in NGSolve by adding the parts of \var{gfX} to another 
 variable called \var{gfset}. This \var{gfset} is then always used to call \fun{SetDeformation()}
- on the mesh. With each call, this adds the \var{gfset} onto the mesh. To circumvent this, 
- after each iteration \fun{UnsetDeformation()} is called. To not overshoot anything, 
- instead of adding the entire \var{gfX} to \var{gfset}, it is scaled by a number divided 
- by its norm. That way we can make sure, that each iteration deforms the mesh in small, 
- similar sized steps. There is still one inconsistency: the \var{gfX} can also deform 
- nodes inside the mesh, which change nothing for the real solution, but count towards this 
- norm. That problem is solvable, by integrating this \obj{GridFunction} over its boundary. 
- Since the outside of our square are dirichlet boundaries, this way only the changes on the 
- obstacle are measured. Another important thing to be aware of is, that symmetric deformations
-  around an obstacle might cancel each other out in the integral. This is circumvented by 
-  calculating with the squared values.
-
-In this chapter we want do describe the process of one iterations which gets repeated time after time until the optimal shape is achieved.
-
-There are a few parameters that are recalculated or conditionally updated through the iterations. This includes the current volume and barycenter values, their respective scalings $\alpha$ and $\beta$, and $gamma$ for the Cauchy Riemann terms that ensure a better mesh quality.
-
-Before we start with the iteration process we reset all possible variables:
-This includes the \var{gfset}, resetting the scene, and to reinitialize the parameters for the geometric constraints. If this step is skipped, one could start with weird variable values that lead to drastically different results.
-
-\begin{lstlisting}[language=Python, title=Reset before iteration, label=lst:reset]
-gfset.Set((0,0))
-mesh.SetDeformation(gfset)
-scene.Redraw()
-updateParams()
-alpha0 = 1e-4
-beta0 = 1e-0
-gamma0 = 1e2
-alpha.Set(alpha0)
-beta.Set(beta0)
-gamma.Set(gamma0)
-iter_max = 750
-\end{lstlisting}
-
-This iteration is bounded by a maximum number of steps, even though it is also be possible to take some measure on the \var{gfX} and determine a stop by it.
-This still requires parameter tuning, especially because some measures could yield different results depending on the mesh width.
-Other possibilities for breaks in the loop are a maximum number for the scaling parameters e.g. $\alpha$ or a very small difference in the drag from one iteration to the next.
-
-Each iteration then starts by calling \fun{SetDeformation(gfset)}, and redrawing needed scenes. This would also be the place to gather data, like the current drag or area of the mesh, etc.
-
-Afterwards we start calculating towards the next step:
-We Assemble the state equation bilinear form and solve it over this newly deformed mesh. Following this we assemble the linear and bilinear form for the shape derivative and solve for a new deformation. After this is done, one can already use \fun{UnsetDeformation()} and the last thing to do is updating values.
-
-We scale the \var{gfX} to its desired magnitude and subtract it from \var{gfset}. At this point it is also wise to check for some measure of close we are to a good solution and for example increase the parameters for the geometric constraints.
-
-The entire code inside the loop looks like this:
-
-\begin{lstlisting}[language=Python, title=Iteration, label=lst:loop]
-		mesh.SetDeformation(gfset)
-		scene.Redraw()
-		data.append(vol.Get())
-		a.Assemble()
-		solveStokes()
-		b.Assemble()
-		dLOmega.Assemble()
-		SolveDeformationEquation()
-		updateParams()
-		mesh.UnsetDeformation()
-		gfxnorm = Norm(gfX.vec)
-		scale = 0.01 / gfxnorm
-		
-		if(gfxnorm < 1e-5):
-			if alpha.Get() < 1:
-				increaseParams(2,True)
-			else:
-				break
-		gfset.vec.data -= scale * gfX.vec
-\end{lstlisting}
-
-It is also possible to implement some sort of line search for the step size, similar to the armijo rule. This way one can do less iterations but take better/bigger steps, being more efficient in regards to computational efforts. More to this can be read in ...
+on the mesh. With each call, this adds the \var{gfset} onto the mesh. To circumvent this, 
+after each iteration \fun{UnsetDeformation()} is called. To not overshoot anything, 
+instead of adding the entire \var{gfX} to \var{gfset}, it is scaled by a number divided 
+by its norm. That way one can make sure, that each iteration deforms the mesh in small, 
+similar sized steps.  The weights $\alpha$ and $\beta$, and $\gamma$ for the volume and 
+barycenter constraints are recalculated or conditionally updated through the iterations. \\
 
 \begin{algorithm}
-	\caption{An algorithm with caption as well}
-	\begin{algorithmic}
+	\setstretch{1.5}
+	\renewcommand{\thealgorithm}{}
+	\caption{PDE Constrained Shape Optimization in NGSolve}
+	\begin{algorithmic}[1]
 	\State \fun{resetDeformation}
-	\State \fun{initializeParameters}
+	\State \fun{initializeParameters} $\alpha$, $\beta$, $\gamma$ \Comment{Aug. Lag. weights for
+	$\mathrm{vol}(\Omega_{\mathrm{i}})$, $\mathrm{bc}_x(\Omega_{\mathrm{i}})$, $\mathrm{bc}_y(\Omega_{\mathrm{i}})$}
 	\For{$\mathrm{i} < \mathrm{iter}_{\mathrm{max}}$}
 		\State SolveStokes() \Comment{Solve Stokes on $\Omega_i$}
 		\State SolveDeformationEquation() \Comment{Solve Auxiliary Problem on $\Omega_i$, yields $X$}
-		\State Evaluate \fun{gfxbndnorm} = $ || X ||_{\mathrm{L}^2(\Gamma_{\infty , \mathrm{n}})} $
+		\State Evaluate \fun{gfxbndnorm} = $ || X ||_{\mathrm{L}^2(\Gamma_{\infty , \mathrm{i}})} $
+		\State Evaluate \fun{ScalingParamter} = $ \frac{0.01}{|| X ||_{\mathrm{L}^2(\Omega_{\mathrm{i}})}} $
 		\If{\fun{gfxbndnorm} $<$ $\varepsilon$} 
-			\State \fun{increaseScalingParameters}
-		\If{\fun{parameterTooBig}}
+			\State Increase $\alpha$, $\beta$, $\gamma$
+		\If{\fun{parametersTooBig}}
 			\State \fun{break}
 		\EndIf
 		\EndIf
-		\State Set $\Omega_i$ to $\Omega_{i+1} = \Omega_i - X \cdot scale$
+		\State Set $\Omega_{i+1}$ =  $\Omega_i - X \cdot$ \fun{ScalingParameter} \Comment{Gradient Descent Step}
 	\EndFor
 	\end{algorithmic}
 \end{algorithm}

@@ -32,7 +32,7 @@ Where $\mu \in \mathbb{R}$ is the viscosity constant and is set to 1 for simplic
 The problem yields the vectorial velocity field $u:\Omega \rightarrow \mathbb{R}^d$ and 
 the scalar pressure field $p:\Omega \rightarrow \mathbb{R}$. In order to solve the Stokes equation with the Finite Element Method in NGSolve,
 it needs to be transformed to the weak formulation, where the solutions $u$ and $p$ are linear combinations of basis functions in a Sobolev space.
-See Faustmann\cite{lecture_notes_faustmann_numPDE} Chapter 3 for further elaborations on Sobolev spaces. The weak formulation can be derrived by
+See Faustmann\cite{lecture_notes_faustmann_numPDE} Chapter 3 for further elaborations on Sobolev spaces. The weak formulation can be derived by
 multipling the now called trial-functions $u$ and $p$ with test-functions $v$ and $q$, perform transformations and integrate them. The test-functions have to fulfil certain
 conditions to permit the transformations in order to arrive at a weak problem with 
 linear convergence rates, see Faustmann \cite{lecture_notes_faustmann_numPDE}: \\
@@ -40,8 +40,8 @@ linear convergence rates, see Faustmann \cite{lecture_notes_faustmann_numPDE}: \
 Find $u \in [H^1_0(\Omega)]^d$ and $p \in L^2(\Omega)$ such that
 \begin{equation}\label{weak_stokes_PDE}
     \begin{aligned}
-    &\int_{\Omega} \nabla \mathbf{u} : \nabla \mathbf{v} \, dx + \int_{\Omega} \mathrm{div}(\mathbf{v})p \, dx &=& \, 0 &\forall& \mathbf{v} \in [H^1_0(\Omega)]^d \\
-    &\int_{\Omega} \mathrm{div}(\mathbf{u})q \, dx &=& \, 0   &\forall& q \in L^2(\Omega)
+    &\int_{\Omega} \nabla \mathbf{u} : \nabla \mathbf{v} \, dx + \int_{\Omega} \mathrm{div}(\mathbf{v})p \, dx &=& \, 0 &\forall& \mathbf{v} \in [H^1_0(\Omega)]^d, \\
+    &\int_{\Omega} \mathrm{div}(\mathbf{u})q \, dx &=& \, 0   &\forall& q \in L^2(\Omega).
     \end{aligned}
 \end{equation}
 
@@ -60,7 +60,7 @@ the product space $[H^1_0(\Omega)]^d \times L^2(\Omega)$, this is done by just a
 
 \null
 
-In lines 19-26 of listing \ref{basic_stokes}, the variational problem \ref{weak_stokes_PDE_product} is added to
+In lines 19-26 of listing \ref{basic_stokes}, the variational problem (\ref{weak_stokes_PDE_product}) is added to
 a \texttt{BilinearForm()}. After assembling of the system, in line 27-31 the non-zero Dirichlet conditions are assigned. 
 When setting up the geometry, the boundaries already have to be named to do the boundary conditions assignment. The geometry
 shown in figure \ref{domain_graphics}, is defined in the beginning in lines 5-11.
@@ -94,13 +94,14 @@ shown in figure \ref{domain_graphics}, is defined in the beginning in lines 5-11
     scene_state.Redraw()
 \end{lstlisting}
 
-Below the solution obtained with NGSolve (see listing \ref{basic_stokes}). On the surface of the cylinder, 
+In figure \ref{basic_stokes_flow_plot} the solution obtained with NGSolve (see listing \ref{basic_stokes}). On the surface of the cylinder, 
 the no-slip condition (standard Dirichlet = 0) can be observed. Also an intuitive observation of the fulfilled continuity can be made:
-where the cross section is smaller, e.g. in $x$ vicinity of the cylinder, the velocity is increased:
-
-\begin{figure}[ht]
+where the cross section is smaller, e.g. in $x$ vicinity of the cylinder, the velocity is increased.
+\begin{figure}[h]
     \centering
-    \includegraphics[width=0.92\textwidth]{figures/solution_stokes_basic.PNG}
+    \includegraphics[width=0.87\textwidth]{figures/solution_stokes_basic.PNG}
 	\caption{Surface Plot - Velocity $||\mathbf{u}||_2$ of Stokes Flow - FEM solution to problem (\ref{stokes_PDE})}
 	\label{basic_stokes_flow_plot}
 \end{figure}
+
+\pagebreak

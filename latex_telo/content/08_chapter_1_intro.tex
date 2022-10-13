@@ -11,15 +11,15 @@ the PDEs and the energy dissipation over the domain is optimized. The optimizati
 be described by a minimization problem which can be solved with the gradient descent method.
 Its important to note, that the PDE constraints and optimization goals used here, 
 can be exchanged with arbitrary PDE constraints and optimization goals. Some parts,
-especially the proof for shape derrivative existence, can get more complex for e.g. 
+especially the proof for shape derivative existence, can get more complex for e.g. 
 Non-Linear PDEs or Transient PDEs.\\
 
 \subsection*{NGSolve}
-The practical implementation part is done in NGSolve, which is a object oriented python Finite Element
+The practical implementation part is done in \fun{NGSolve}, which is a object oriented python Finite Element
 Method library with automatic differentiation capabilites. The mathematical formulations in this document 
-can mostly be implemented directly, as one can see in either in appendix APPENDIX or in the associated
+can mostly be implemented directly, as one can see in either in appendix \ref{app_a} or in the associated
 Jupyter Notebook file. Gangl et. al. \cite{fully_semi_paper_sturm} have shown the PDE Constrained 
-Optimization capabilites of NGSolve. For more in-depth explanations and examples on NGSolve 
+Optimization capabilites of NGSolve. For more in-depth explanations and examples for \fun{NGSolve}
 visit \href{https://ngsolve.org/}{ngsolve.org}.
 
 \subsection*{Minimization Problem}
@@ -28,35 +28,35 @@ A generic PDE constrained optimization problem is of the following form:
         \min_{ \Omega \in \mathcal{A} } J( \Omega, u) \\
         s.t. \quad \mathrm{B}_{\Omega}(u) = 0
 \end{align*}
-Where $\Omega$ is the Domain for the PDE, $\mathcal{A}$ is the set of admissible shapes
-$J(\Omega, u)$ is a functional that is to be minimized and $\mathrm{B}_{\Omega}(u)$ is the PDE
-constraint and its solution $u$. The Domain $\Omega$ is what is going to be 
+Where $\Omega$ is the domain for the PDE, $\mathcal{A}$ is the set of admissible shapes
+$J(\Omega,u)$ is a functional that is to be minimized and $\mathrm{B}_{\Omega}(u)$ is the PDE
+constraint and its solution $u$. The domain $\Omega$ is what is going to be 
 optimized in the underlying work. \\
 
-\subsection*{Shape Derrivative}
+\subsection*{Shape Derivative}
 In order to find a numerical solution to the minimization problem with the gradient descent
-method, the existence of the analytical shape derrivative needs to be shown. Here the
+method, the existence of the analytical shape derivative needs to be shown. Here the
 differentiability of $J(\Omega,u)$ at $\Omega \in \mathcal{A}$ in direction $X$ is shown. 
 As Sturm et. al. \cite{nearly_conformal_paper} have shown, the functional 
-$J(\Omega, u)$ can be reduced to a functional $J(\Omega)$ and the shape derrivative 
-$\mathrm{d}J(\Omega)(X)$ exists. In chapter \ref*{}, the proof is recapitulated briefly.
+$J(\Omega, u)$ can be reduced to a functional $J(\Omega)$ and the shape derivative 
+$\mathrm{d}J(\Omega)(X)$ exists. In chapter \ref{proof_chapter}, the proof is recapitulated briefly.
 
 \pagebreak
 
 \subsection*{Auxiliary Problem - Descent Direction}
-To find the gradient descent direction, here the vectorfield $-X$, an auxiliary problem needs to be solved.
-Since its solved with the Finite Element Method libary NGSolve, the PDE problem is posed in a weak sense where 
-$H$ is e.g. a Sobolov space. Find $X \in [H(\Omega)]^2:$ 
+To find the gradient descent direction, here the negative direction of the vectorfield $X$, an auxiliary problem needs to be solved.
+Since its solved with the Finite Element Method libary \fun{NGSolve}, the PDE problem is posed in a weak sense where 
+$H$ is a Sobolov space. Find $X \in [H(\Omega)]^2:$ 
 \begin{align*}
     \mathrm{d}J(\Omega)(X) = \mathrm{b}(X,\varphi)_H \quad \forall  \varphi \in H
 \end{align*}
-If the bi-linear form $\mathrm{b}(.,.)_H$ is chosen such that it is positive definite, the negative solution $X$
+If the bilinear form $\mathrm{b}(.,.)_H$ is chosen such that it is positive definite, the negative solution $X$
 of the auxiliary problem points in the negative direction of the gradient.
 
 \subsection*{Optimization Steps}
-The problem $\mathrm{B}_{\Omega}(u) = 0$ can be solved, the shape derivative $\mathrm{d}J(\Omega)(X)$ can be calculated, the auxilary problem which yields 
-the descent direction $-X$ can be solved as well. In the last step the optimization takes place where one can e.g. use a gradient descent method
- from \texttt{numpy}.
+The problem $\mathrm{B}_{\Omega}(u) = 0$ can be solved, the shape derivative $\mathrm{d}J(\Omega)(X)$ can be computed, the auxilary problem which yields 
+the descent direction $X$ can be solved as well. In the last step the optimization takes place where one can use any gradient descent method. Introduction
+of the perturbation $\mathrm{T}_t(.)$:
  \begin{align*}
     X \in [C^{0,1}(\Omega)]^2 \quad , \, \mathrm{T}_t(.):= \mathrm{id} + tX \quad , \, \text{choose } t \in \mathbb{R}
 \end{align*}
@@ -71,7 +71,7 @@ is by introducing an Augmented Lagrangian, here briefly discussed is the underly
     \min_{ \Omega} J( \Omega) \quad \text{s.t.} \quad \mathrm{B}_{\Omega}(u) = 0
 \end{align*}
 where $J(.) : \mathbb{R}^n \rightarrow \mathbb{R}$, and $\mathrm{B}_{\Omega}(.):\mathbb{R}^n \rightarrow \mathbb{R}^p$ are differentiable functions.
-If the differentiability has been shown, the quadratic penalty method yields an approximative minimization result:
+If the differentiability has been shown, the Quadratic Penalty Method yields the approximative minimization result.
 \begin{align*}
     \mathcal{L}_{\alpha}(\Omega) = J(\Omega) + \frac{\alpha}{2}|\mathrm{B}_{\Omega}(u)|^2 \, , \quad \alpha > 0s
 \end{align*}

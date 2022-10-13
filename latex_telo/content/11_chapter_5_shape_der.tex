@@ -1,56 +1,55 @@
 
-\section{Shape Derivative in NGSolve}
-\subsection{Derrivative of the Augmented Lagrangian}
+\section{Shape Derivative in NGSolve}\label{shape_der_chapter}
+\subsection{Derivative of the Augmented Lagrangian}
 
 After the Augmented Lagrangian is set up accordingly, the derivatives $\mathrm{d}\mathcal{L}_{\mathrm{i}}(\Omega)(X)$ can be formulated and implemented.
 In the NGSolve implementation, analytical derivatives for the terms $\mathrm{d}\mathcal{L}^2_{\mathrm{bc}}(\Omega)(X)$ 
-and $\mathrm{d}\mathcal{L}^2_{\mathrm{vol}}(\Omega)(X)$ are directly used. Here the definition for $\mathrm{vol}(\Omega)$ is equal to
-the definition in eq. (\ref{vol_equation}) and $\mathrm{bc}_{x,y}(\Omega)$ are equal to the definitions in eq. (\ref{bc_equation}).\\
+and $\mathrm{d}\mathcal{L}^2_{\mathrm{vol}}(\Omega)(X)$ are directly used. The definition for $\mathrm{vol}(\Omega)$ is equal to
+the definition in equation (\ref{vol_equation}) and $\mathrm{bc}_{x,y}(\Omega)$ are equal to the definitions in equation (\ref{bc_equation}).\\
 
-Derivative for the volume constraint term in $X$ direction:
+The derivative of the volume constraint term in $X$ direction is given by
 \begin{equation}\label{eq:constraints_vol}
 	%L(\Omega,u,p) += 
 	\mathrm{d}\mathcal{L}^2_{\mathrm{vol}}(\Omega)(X) = 2 \, \alpha \Big( (\mathrm{vol}(\Omega) - \mathrm{vol}(\Omega_0) \Big) \, \mathrm{div}(X)
 \end{equation}
-
-Derivative for the barycenter constraint term in $X$ direction:
-
+And the derivative of the barycenter constraint term in $X$ direction is given by
 \begin{equation}\label{eq:constraints_bc}
 	\begin{aligned}
 	\mathrm{d}\mathcal{L}^2_{\mathrm{bc}}(\Omega)(X) =
 	2& \, \beta \Big( \mathrm{bc}_x(\Omega) - \mathrm{bc}_x(\Omega_0) \Big) \, \int_{\Omega} \frac{1}{\mathrm{vol}(\Omega)^2} \, \mathrm{div}(X) \, x 
 	+ \frac{1}{\mathrm{vol}(\Omega)} \, \mathrm{div}(X) \, x \cdot \vec{e}_x \, X \, \mathrm{dx} \\
 	+& \, 2 \, \gamma \Big( \mathrm{bc}_y(\Omega) - \mathrm{bc}_y(\Omega_0) \Big) \, \int_{\Omega} \frac{1}{\mathrm{vol}(\Omega)^2} \, \mathrm{div}(X) \, y 
-	+ \frac{1}{\mathrm{vol}(\Omega)} \, \mathrm{div}(X) \, y \cdot \vec{e}_y \, X\, \mathrm{dx}
+	+ \frac{1}{\mathrm{vol}(\Omega)} \, \mathrm{div}(X) \, y \cdot \vec{e}_y \, X\, \mathrm{dx}.
 	\end{aligned}
 \end{equation}
 \\
 To obtain the term $\mathrm{d}\mathcal{L}(\Omega)(X)$, the NGSolve command \fun{DiffShape(X)} is used, to utilize the library's Automatic Differentiation
-capabilites. Finally one arrives at the shape derivative that is, to reiterate, the derivative of the Augmented Lagrangian:
+capabilites. Finally one arrives at the shape derivative that is, to reiterate, the derivative of the Augmented Lagrangian
 
 \begin{align}
 	\mathrm{d}\mathcal{L}_{\mathrm{aug}}(\Omega)(X) = \mathrm{d}\mathcal{L}(\Omega)(X) + \mathrm{d}\mathcal{L}^2_{\mathrm{vol}}(\Omega)(X) 
-	+ \mathrm{d}\mathcal{L}^2_{\mathrm{bc}}(\Omega)(X)
+	+ \mathrm{d}\mathcal{L}^2_{\mathrm{bc}}(\Omega)(X).
 \end{align}
-In the listing below, the implementation in NGSolve, for more details see either appendix APPENDIX REFERENCE or the \fun{JupyterNotebook} :
+In listing \ref{lagrangian_derivative_code} the implementation in NGSolve, for more details see either appendix \ref{final_code} or the 
+\fun{JupyterNotebook}
 \begin{lstlisting}[language=Python, title=Derivative of Augmented Lagrangian, label=lagrangian_derivative_code]
 	# Initilize LinearForm object
 	dLOmega = LinearForm(VEC)
 	# add automatic shape differentiation term to LinearForm object
 	dJOmega += Lagrangian.DiffShape(X)
-	# add analytically derrived volume constraint term to LinearForm object
+	# add analytically derived volume constraint term to LinearForm object
 	vol = Parameter(1)
 	vol.Set(Integrate(surf_t,mesh))
 	alpha0 = 1e-4
 	alpha = Parameter(alpha0)
 	dLOmega += 2*alpha*(vol-surf_0)*div(X)*dx
-	# add analytically derrived x-barycenter constraint term to LinearForm object
+	# add analytically derived x-barycenter constraint term to LinearForm object
 	beta0 = 1e-3
 	beta = Parameter(beta0)
 	bc_x = Parameter(1)
 	bc_x.Set((1/surf_0)*Integrate(bc_tx,mesh))
 	dJOmega += 2*beta*(bc_x-bc_0x)*((1/vol**2)*div(X)*x+(1/vol)*div(X)*x*sum(gfset.vecs[0].data)[0])*dx
-	# add analytically derrived y-barycenter constraint term to LinearForm object
+	# add analytically derived y-barycenter constraint term to LinearForm object
 	bc_y = Parameter(1)
 	bc_y.Set((1/surf_0)*Integrate(bc_ty,mesh))
 	dJOmega += 2*beta*(bc_y-bc_0y)*((1/vol**2)*div(X)*y+(1/vol)*div(X)*y*sum(gfset.vecs[0].data)[1])*dx

@@ -4,19 +4,19 @@ In the previous chapter, a formulation for $\mathrm{d}\mathcal{L}_{\mathrm{aug}}
 was derived. As a next step one needs to formulate an auxiliary problem: since it is demanded,
 that the functional $\mathcal{L}_{\mathrm{aug}}(\Omega)$ is minimized, one follows the 
 negative gradient $-X$. This yields a PDE which can be solved in a weak sense with FEM in NGSolve.
-The weak formulation of the auxiliary problem for $X$ reads as follows:\\
+The weak formulation of the auxiliary problem for $X$ reads as follows \\
 
-find $X \in [H(\Omega)]^2$ such that:
+find $X \in [H(\Omega)]^2$ such that
 \begin{align}
-	\mathrm{d}\mathcal{L}_{\mathrm{aug}}(\Omega)(X) = -(X,\varphi)_H \quad \forall \varphi \in H(\Omega)
+	\mathrm{d}\mathcal{L}_{\mathrm{aug}}(\Omega)(X) = -(X,\varphi)_H \quad \forall \varphi \in H(\Omega).
 \end{align}
 
 Sturm et. al. \cite{nearly_conformal_paper} have proposed different spaces $H$ for the auxiliary problem
 and investigated their impact analytically. The main criterion being, that the bi-linear 
 form $(X,\varphi)_H$ is positive definite,
-to guarantee that the direction $-X$ is indeed negative. For the case $H=H^1(\Omega)$:
+to guarantee that the direction $-X$ is indeed negative. For the case $H=H^1(\Omega)$
 \begin{align}
-	(X,\varphi)_{H^1(\Omega)} = \int_{\Omega} \, X \, \varphi \, + \mathrm{D}X:\mathrm{D}\varphi \, \mathrm{dx}
+	(X,\varphi)_{H^1(\Omega)} = \int_{\Omega} \, X \, \varphi \, + \mathrm{D}X:\mathrm{D}\varphi \, \mathrm{dx}.
 \end{align}
 
 \subsection{The Vectorfield $X$ as a Conformal Mapping}
@@ -25,28 +25,28 @@ to omit remeshing of the domain or severe degradation of the elements.
 This because remeshing is relatively expensive computation wise and element degradation
 would lead to a large local error of the Stokes flow solution.
 If the vectorfield $X$ satisfies the Cauchy-Riemann Equations it is a holomorphic injective 
-transformation, which is conformal. Where $X = (X_1, X_2) \in [C^1(\Omega)]^2$:
+transformation, which is conformal. Where $X = (X_1, X_2) \in [C^1(\Omega)]^2$
 
 \begin{equation}\label{CR_eq}
 	\begin{aligned}
 		\partial_x X_1 &= \partial_y X_2 \\
-		\partial_y X_1 &= -\partial_x X_2 \\
+		\partial_y X_1 &= -\partial_x X_2. \\
 	\end{aligned}
 \end{equation}
 The linear operator $\mathcal{B}$ is used for more compact notation of the 
-Cauchy-Riemann equations (\ref{CR_eq}):
+Cauchy-Riemann equations (\ref{CR_eq})
 \begin{equation}\label{CR_B}
 	\begin{aligned}
 		\mathcal{B} = 
 		\begin{pmatrix}
 			-\partial_x & \partial_y\\
 			\partial_y & \partial_x
-		\end{pmatrix} ,\quad [C^1(\Omega)]^2 \rightarrow [C^0(\Omega)]^2
+		\end{pmatrix} ,\quad [C^1(\Omega)]^2 \rightarrow [C^0(\Omega)]^2.
 	\end{aligned}
 \end{equation}
-With introduction of $\mathcal{B}$, one can write the CR-Equations (\ref{CR_eq}) as:
+With introduction of $\mathcal{B}$, one can write the CR-Equations (\ref{CR_eq}) as
 \begin{align*}
-	\mathcal{B}X=0
+	\mathcal{B}X=0.
 \end{align*}
 Now one can use the CR-Equations to adjust the auxiliary problem to yield nearly conformal 
 mappings. Where $|| \, . \, ||_P: \, P \rightarrow \mathbb{R}$ is a
@@ -54,7 +54,7 @@ norm on a Hilbert space $P$ and $\mathcal{B}:H \rightarrow P$ is a linear contin
 in $P$  such that $\mathcal{B}(H) \subset P$, find $X \in [H(\Omega)]^2$
 \begin{align}\label{eq_conf_aux}
 	\mathrm{d}\mathcal{L}_{\mathrm{aug}}(\Omega)(X) = \alpha (\mathcal{B}X,\mathcal{B}\varphi)_P
-	+ (X,\varphi)_H, \quad \alpha \in \mathbb{R}, \quad \forall \varphi \in [H(\Omega)]^2
+	+ (X,\varphi)_H, \quad \alpha \in \mathbb{R}, \quad \forall \varphi \in [H(\Omega)]^2.
 \end{align}
 The parameter $\alpha$ can now be used to weigh the conformality of the mapping. For higher 
 $\alpha$ the mapping is more conformal.
