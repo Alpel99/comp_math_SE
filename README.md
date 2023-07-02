@@ -1,3 +1,5 @@
+# trying to extend this for airfoil/lift optimization
+
 # comp_math_SE
 
 seminar on computational mathematics
